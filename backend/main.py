@@ -57,3 +57,5 @@ def get_iris_original_data(db: Session = Depends(get_db)):
     if not data:
         raise HTTPException(status_code=404, detail="Iris original data not found")
     return data
+
+## 추후 frontend에 보낼 데이터 정학기
