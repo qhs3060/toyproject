@@ -27,3 +27,9 @@ EXPOSE 80
 
 # Start Nginx server
 CMD ["nginx", "-g", "daemon off;"]
+
+# cd project/frontend
+# Docker 이미지를 빌드합니다. (이미지명 toyproject-web로 지정)
+# docker build -t toyproject-web .
+# 컨테이너를 실행합니다.
+# docker run -p 3000:80 toyproject-web

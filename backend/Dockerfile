@@ -22,3 +22,6 @@ EXPOSE 8000
 
 # Command to run the application
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+# docker build -t toyproject-api .
+# docker run -e DATABASE_URL=postgresql://postgres:1234@host.docker.internal:5432/snubh -p 8000:8000 toyproject-api
