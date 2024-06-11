@@ -1,25 +1,29 @@
-# frontend/Dockerfile
+# Build stage
+FROM node:16-alpine AS build
 
-# Use the official Node.js image from the Docker Hub
-FROM node:16
-
-# Set the working directory in the container
+# Set the working directory
 WORKDIR /app
 
-# Copy the package.json and yarn.lock files to the working directory
-COPY package.json yarn.lock ./
+# Copy the package.json and package-lock.json
+COPY package*.json ./
 
-# Install the dependencies
-RUN yarn install
+# Install dependencies using npm
+RUN npm install
 
-# Copy the rest of the application code into the container
+# Copy the rest of the application code
 COPY . .
 
-# Build the application
-RUN yarn build
+# Build the React app
+RUN npm run build
 
-# Expose the port the app runs on
-EXPOSE 3000
+# Serve stage
+FROM nginx:alpine
 
-# Run the application
-CMD ["npm", "start"]
+# Copy the built files from the previous stage to the nginx html directory
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Expose the port that the application runs on
+EXPOSE 80
+
+# Start Nginx server
+CMD ["nginx", "-g", "daemon off;"]

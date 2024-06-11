@@ -1,22 +1,24 @@
-# backend/Dockerfile
+# Backend Dockerfile
 
-# Use the official Python image from the Docker Hub
-FROM python:3.9
+# Use an appropriate base image
+FROM python:3.9-slim
 
-# Set the working directory in the container
+# Set environment variables
+ENV DATABASE_URL=postgresql://postgres:1234@localhost:5432/snubh
+ENV SECRET_KEY=supersecretkey
+ENV DEBUG=true
+
+# Set the working directory
 WORKDIR /app
 
-# Copy the requirements file into the container
-COPY requirements.txt .
+# Copy the application code
+COPY . /app
 
-# Install any dependencies
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code into the container
-COPY . .
-
-# Expose the port the app runs on
+# Expose the application port
 EXPOSE 8000
 
-# Run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+# Command to run the application
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
